@@ -4,7 +4,7 @@ import tkinter
 import converter
 
 root = tkinter.Tk()
-
+root.withdraw()
 a = tkinter.Label(root, text="convertisseur python")
 
 a.pack()
@@ -52,5 +52,6 @@ def gui_update():
 
 
 def gui_run():
+    root.deiconify()
     root.after(100, gui_update)
     root.mainloop()
