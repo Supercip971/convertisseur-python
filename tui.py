@@ -1,85 +1,67 @@
-from typing import Container
-import backend 
+import backend
 import sys
-from prompt_toolkit import prompt 
-
-from prompt_toolkit.application import Application
-from prompt_toolkit.application.current import get_app
-from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit.key_binding.bindings.focus import focus_next, focus_previous
-from prompt_toolkit.layout import HSplit, Layout, VSplit
-from prompt_toolkit.styles import Style
-from prompt_toolkit.widgets import Box, Button, Frame, Label, TextArea
+import converter
+import py_cui
+import py_cui.keys
+import py_cui.widgets
+root = py_cui.PyCUI(2, 3)
 
 
-def tui_exit():
-    exit()
-class Tui(backend.Backend): 
-    root_container : Container
-    raw_text_area : TextArea
-    bin_text_area : TextArea
-    hex_text_area : TextArea
-    exit_button: Button
-    kb: KeyBindings
-    def text_updated(self):
-        self.bin_text_area.text = "hello"
-    def __init__(self):
-        pass 
+def help_popup():
+    root.show_menu_popup("aide", ["pour quitter appuyez sur 'q' ",
+                                  "pour naviguer entre les widgets/menus appuyez sur les touches directionnelles ou la souris",
+                                  "pour pouvoir éditer un widget appuyez sur 'enter'",
+                                  "si vous le voulez vous pouvez directement utiliser la souris pour sélectionner et editer un champ",
+                                  "pour quitter le mode édition d'un widget appuyez sur 'escape'"], lambda s: s)
 
-    def run(self):
-        self.exit_button = Button("exit", tui_exit)
-        self.bin_text_area = TextArea(focusable=True, text="0b0")
-        self.hex_text_area = TextArea(focusable=True, text="0x0")
-        self.raw_text_area = TextArea(focusable=True, text="0")
-        self.root_container = Box(
-            HSplit(
-                [
-                    Label(text="Press `Tab` to move the focus."),
-                    VSplit(
-                        [
-                            Box(
-                                body=HSplit([self.exit_button], padding=1),
-                                padding=1,
-                                style="class:left-pane",
-                            ),
-                            Box(body=Frame(self.raw_text_area), padding=1, style="class:right-pane"),
-                            Box(body=Frame(self.bin_text_area), padding=1, style="class:right-pane"),
-                            Box(body=Frame(self.hex_text_area), padding=1, style="class:right-pane"),
-                        ]
-                    ),
-                ]
-            ),
-        )
 
-        self.layout = Layout(container=self.root_container, focused_element=self.exit_button)
-        
-        
-        # Key bindings.
-        self.kb = KeyBindings()
-        self.kb.add("tab")(focus_next)
-        self.kb.add("s-tab")(focus_previous)
+root.set_status_bar_text("appuyez sur 'h' pour avoir de l'aide")
 
-        # Styling.
-        self.style = Style(
-            [
-                ("left-pane", "bg:#880000 #000000"),
-                ("right-pane", "bg:#aa0000 #000000"),
-                ("button", "#000000"),
-                ("button-arrow", "#000000"),
-                ("button focused", "bg:#ff0000"),
-                ("text-area focused", "fg:#ffffff"),
-            ]
-        )
 
-        self.application = Application(layout=self.layout, key_bindings=self.kb, style=self.style, full_screen=True)
+def input_box_init(box: py_cui.widgets.TextBox) -> py_cui.widgets.TextBox:
+    box.add_mouse_command(py_cui.keys.LEFT_MOUSE_CLICK,
+                          lambda: root.move_focus(box))
+    return box
 
-        self.application.run()
-        
 
-    def draw(self):
-        pass
-    def update(self) -> backend.CalValue: 
-        pass
+box = input_box_init(root.add_text_box("base 10", 1, 0))
+hex_box = input_box_init(root.add_text_box("hex", 1, 1))
+bin_box = input_box_init(root.add_text_box("binary", 1, 2))
 
-    def exit(self): 
-        pass
+root.add_key_command(py_cui.keys.KEY_H_LOWER, help_popup)
+
+root.set_refresh_timeout(0.1)
+
+
+def get_box_value(cur):
+    if(cur == bin_box):
+        return converter.val_from_bin(cur.get())
+    if(cur == hex_box):
+        return converter.val_from_hex(cur.get())
+    if(cur == box):
+        return converter.val_from_raw(cur.get())
+
+
+def update_other_box(cur):
+    val = get_box_value(cur)
+
+    if(cur != bin_box):
+        bin_box.set_text(converter.val_to_bin(val))
+    if(cur != hex_box):
+        hex_box.set_text(converter.val_to_hex(val))
+    if(cur != box):
+        box.set_text(converter.val_to_raw(val))
+
+
+def tui_update():
+    widg = root.get_selected_widget()
+    if isinstance(widg, py_cui.widgets.TextBox):
+        val = widg.get()
+        update_other_box(widg)
+
+
+root.set_on_draw_update_func(tui_update)
+
+
+def tui_run():
+    root.start()
