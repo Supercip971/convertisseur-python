@@ -1,6 +1,7 @@
 import sys
 import backend
 import tui
+import console
 import gui
 
 
@@ -13,6 +14,8 @@ def arg_help():
 def run_backend(type: backend.GuiBackendType):
     if(type == backend.GuiBackendType.TUI):
         return tui.tui_run()
+    if(type == backend.GuiBackendType.CONSOLE):
+        return console.console_run()
     if(type == backend.GuiBackendType.GUI):
         return gui.gui_run()
     else:
