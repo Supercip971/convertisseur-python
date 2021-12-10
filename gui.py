@@ -1,5 +1,3 @@
-import backend
-import sys
 import tkinter
 import converter
 
@@ -16,7 +14,6 @@ bin_box.pack(pady=10)
 hex_text = tkinter.StringVar(value="0x0")
 hex_box = tkinter.Entry(root, textvariable=hex_text)
 hex_box.pack(pady=10)
-
 
 raw_text = tkinter.StringVar(value="0")
 raw_box = tkinter.Entry(root, textvariable=raw_text)
@@ -48,6 +45,7 @@ def gui_update():
 
     if isinstance(focused, tkinter.Entry):
         update_other_box(focused)
+
     root.after(100, gui_update)
 
 

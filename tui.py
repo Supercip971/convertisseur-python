@@ -1,9 +1,8 @@
-import backend
-import sys
 import converter
 import py_cui
 import py_cui.keys
 import py_cui.widgets
+
 root = py_cui.PyCUI(2, 3)
 
 
