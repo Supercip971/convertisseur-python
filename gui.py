@@ -20,7 +20,7 @@ raw_box = tkinter.Entry(root, textvariable=raw_text)
 raw_box.pack(pady=10)
 
 
-def get_box_value(cur):
+def get_box_value(cur: tkinter.Entry) -> int:
     if(cur == bin_box):
         return converter.val_from_bin(bin_text.get())
     if(cur == hex_box):
@@ -29,7 +29,7 @@ def get_box_value(cur):
         return converter.val_from_raw(raw_text.get())
 
 
-def update_other_box(cur):
+def update_other_box(cur: tkinter.Entry):
     val = get_box_value(cur)
 
     if(cur != bin_box):

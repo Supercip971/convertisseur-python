@@ -1,17 +1,19 @@
 import converter
 
 
-def console_error_check(val, inputed_val, action):
+def console_error_check(val: int, inputed_val: str, action: str):
     if val == None:
         print("erreur: l'action'", action,
               "' ne peut pas utiliser la valeur '", inputed_val, "'")
         exit()
 
 
+input_message = "tappez: 'x' pour hexadécimal, 'd' pour décimal, 'b' pour binaire, 'q' pour quitter: (x/d/b/q):"
+
+
 def console_run():
     while True:
-        action = input(
-            "tappez: 'x' pour hexadécimal, 'd' pour décimal, 'b' pour binaire, 'q' pour quitter: (x/d/b/q) ")
+        action = input(input_message)
 
         if not action in "xdbq":
             print("action invalide:", action)
@@ -22,6 +24,7 @@ def console_run():
 
         val = input("entez une valeur: ")
         converted_val = 0
+
         if action == 'b':
             converted_val = converter.val_from_bin(val)
         elif action == 'x':
