@@ -76,7 +76,7 @@ Cependant le résultat est inversé car on boucle de droite a gauche, donc on in
     return result[::-1]  # reverse string
 ```
 
-## Les fonctions `val_to_hex(value: int) -> str` `val_to_bin` et `val_to_raw`
+## Les fonctions `val_to_hex(value: int) -> str` `val_to_bin` et `val_to_dec`
 
 Ces fonctions permettent de convertir une valeur en un string (binaire, hexadécimal, et décimal).
 Elles appellent directement `convet_to_val` avec les bases correspondantes et rajoutent: "0b" ou "0x" si c'est nécéssaire.
@@ -114,7 +114,7 @@ Donc imaginons que l'on a la valeur `"123"` avec la base `10`.
 ```
 
 
-## Les fonctions `val_from_hex(value: str) -> int` `val_from_bin` et `val_from_raw`
+## Les fonctions `val_from_hex(value: str) -> int` `val_from_bin` et `val_from_dec`
 
 Ces fonctions permettent de convertir un string en une valeur. Elles appellent direcement la fonction `val_from_str` avec les bases correspondantent.
 Elles peuvent aussi supprimer les préfixs: "0b" et "0x" des nombres binaires ou hexadécimaux

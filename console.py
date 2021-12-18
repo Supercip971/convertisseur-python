@@ -30,10 +30,10 @@ def console_run():
         elif action == 'x':
             converted_val = converter.val_from_hex(val)
         else:
-            converted_val = converter.val_from_raw(val)
+            converted_val = converter.val_from_dec(val)
 
         console_error_check(converted_val, val, action)
 
-        print("valeur décimale:", converter.val_to_raw(converted_val))
+        print("valeur décimale:", converter.val_to_dec(converted_val))
         print("valeur hexadécimale:", converter.val_to_hex(converted_val))
         print("valeur binaire:", converter.val_to_bin(converted_val))

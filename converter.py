@@ -1,5 +1,21 @@
-str_xdigits = ["0", "1", "2", "3", "4", "5", "6",
-               "7", "8", "9", "a", "b", "c", "d", "e", "f"]
+str_xdigits = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+]
 
 
 def convert_digit(value: int, base: int) -> str:
@@ -31,7 +47,7 @@ def val_to_bin(value: int) -> str:
     return "0b" + convert_to_val(value, 2)
 
 
-def val_to_raw(value: int) -> str:
+def val_to_dec(value: int) -> str:
     return convert_to_val(value, 10)
 
 
@@ -39,7 +55,7 @@ def val_from_str(value: str, base: int) -> int:
     value = value.lower()
     result = 0
 
-    for c in (value):
+    for c in value:
         if c not in str_xdigits or int(str_xdigits.index(c)) >= base:
             return None
 
@@ -56,5 +72,5 @@ def val_from_bin(value: str) -> int:
     return val_from_str(value.removeprefix("0b"), 2)
 
 
-def val_from_raw(value: str) -> int:
+def val_from_dec(value: str) -> int:
     return val_from_str(value, 10)
