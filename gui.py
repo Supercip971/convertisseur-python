@@ -1,4 +1,6 @@
 import tkinter
+import os
+import sys
 import converter
 
 root = tkinter.Tk()
@@ -55,8 +57,19 @@ def gui_update():
         update_other_box(focused)
     root.after(100, gui_update)
 
+# le fichier d'icon est différent si on est dans l'executable ou dans python
+# si c'est un executable c'est directement 
+def gui_get_icon():
+    if getattr(sys, 'frozen', False):
+        return tkinter.PhotoImage(file=os.path.join(sys._MEIPASS, "./resources/icon.png"))
+    else:
+        return tkinter.PhotoImage(file="./resources/icon.png")
+
 
 def gui_run():
     root.deiconify()
+    # met l'icone à cette fenêtre et à toute les fenêtre enfants
+    root.iconphoto(True, gui_get_icon())
+
     root.after(100, gui_update)
     root.mainloop()
