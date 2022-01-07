@@ -38,7 +38,7 @@ jobs:
         include:
           - os: windows-latest
             TARGET: windows
-            CMD_BUILD: pyinstaller -F -w -n bxd_cyp -i resources/icon.ico main.py --add-data="resources/icon.png:resources"
+            CMD_BUILD: pyinstaller -F -w -n bxd_cyp -i resources/icon.ico main.py --add-data="resources\icon.png;resources"
             OUT_FILE_NAME: bxd_cyp.exe
             ASSET_MIME: application/vnd.microsoft.portable-executable
     steps:
