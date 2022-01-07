@@ -20,7 +20,7 @@ dec_box.pack(pady=10, padx=10, fill='x')
 
 info_text = tkinter.StringVar(
     value="info: vous pouvez rajouter des arguments \n à la ligne de commande pour changer le type d'interface")
-info = tkinter.Label(root, textvariable=b_text)
+info = tkinter.Label(root, textvariable=info_text)
 info.pack(pady=10, padx=10, fill="x")
 
 quit_button = tkinter.Button(root, text="exit", command=root.destroy)
@@ -50,7 +50,8 @@ def update_other_box(cur: tkinter.Entry):
 def gui_update():
     focused = root.focus_get()
 
-    if isinstance(focused, tkinter.Entry):  # on ne fait rien l'utilisateur sélectionne le bouton
+    # on ne fait rien l'utilisateur sélectionne le bouton
+    if isinstance(focused, tkinter.Entry):
         update_other_box(focused)
     root.after(100, gui_update)
 
