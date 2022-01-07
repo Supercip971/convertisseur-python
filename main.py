@@ -12,13 +12,14 @@ def arg_update(argv_list):
     if(len(sys.argv) != 2):
         print("usage: convpy [action]")
         print("you can do 'convpy help' for help")
-        exit()
+        print("it will defaultr as a gui")
+        return backend.GuiBackendType.from_str("gui")
 
     arg = argv_list[1]
 
     if arg == "help":
         arg_help()
-        exit()
+        exit(0)
 
     gui_type = backend.GuiBackendType.from_str(arg)
 
