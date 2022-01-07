@@ -8,7 +8,7 @@ on:
 
 jobs:
   make_release:
-    names: Release
+    name: Release
     runs-on: [ubuntu-latest]
     steps:
       - name: Create Release
@@ -31,45 +31,45 @@ jobs:
 
   build:
     name: Build
-      needs: make_release
-      runs-on: ${{ matrix.os }}
-      strategy:
-        matrix:
-          include:
-            - os: windows-latest
-              TARGET: windows
-              CMD_BUILD: pyinstaller -F -w -n bxd_cyp -i resources/icon.ico main.py
-              OUT_FILE_NAME: bxd_cyp.exe
-              ASSET_MIME: application/vnd.microsoft.portable-executable
-      steps:
-        - uses: actions/checkout@v1
-        - name: Installing python 3.9
-          uses: actions/setup-python@v2
-          with:
-            python-version: 3.8
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-        - name: Running pyinstaller for ${{matrix.TARGET}}
-          run: ${{matrix.CMD_BUILD}}
-        - name: Load release url
-          uses: actions/download-artifact@v1
-          with:
-            name: release_url
-        - name: Load release (2)
-          id: get_release_info
-          shell: bash
-          run: |
-            value=`cat release_url/release_url.txt`
-            echo ::set-output name=upload_url::$value
-        - name: Upload Release
-          id: upload-release-asset
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-            asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
-            asset_name: ${{ matrix.OUT_FILE_NAME}}
-            asset_content_type: ${{ matrix.ASSET_MIME}}
+    needs: make_release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            TARGET: windows
+            CMD_BUILD: pyinstaller -F -w -n bxd_cyp -i resources/icon.ico main.py
+            OUT_FILE_NAME: bxd_cyp.exe
+            ASSET_MIME: application/vnd.microsoft.portable-executable
+    steps:
+      - uses: actions/checkout@v1
+      - name: Installing python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Running pyinstaller for ${{matrix.TARGET}}
+        run: ${{matrix.CMD_BUILD}}
+      - name: Load release url
+        uses: actions/download-artifact@v1
+        with:
+          name: release_url
+      - name: Load release (2)
+        id: get_release_info
+        shell: bash
+        run: |
+          value=`cat release_url/release_url.txt`
+          echo ::set-output name=upload_url::$value
+      - name: Upload Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+          asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
+          asset_name: ${{ matrix.OUT_FILE_NAME}}
+          asset_content_type: ${{ matrix.ASSET_MIME}}
