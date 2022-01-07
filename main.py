@@ -19,13 +19,13 @@ def arg_update(argv_list):
 
     if arg == "help":
         arg_help()
-        exit(0)
+        sys.exit(0)
 
     gui_type = backend.GuiBackendType.from_str(arg)
 
     if (gui_type == backend.GuiBackendType.NONE):
         print("argument: ", arg, "is not handled")
-        exit(-1)
+        sys.exit(-1)
 
     return gui_type
 

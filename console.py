@@ -1,11 +1,11 @@
 import converter
-
+import sys
 
 def console_error_check(val: int, inputed_val: str, action: str):
     if val == None:
         print("erreur: l'action'", action,
               "' ne peut pas utiliser la valeur '", inputed_val, "'")
-        exit()
+        sys.exit()
 
 
 input_message = "tappez: 'x' pour hexadécimal, 'd' pour décimal, 'b' pour binaire, 'q' pour quitter: (x/d/b/q):"
